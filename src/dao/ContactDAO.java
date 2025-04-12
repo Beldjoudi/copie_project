@@ -15,7 +15,7 @@ public class ContactDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Remplacer les ? par les valeurs du contact
+            // Remplacer les ? (placeholder) par les valeurs du contact
             stmt.setString(1, c.getNom());
             stmt.setString(2, c.getPrenom());
             stmt.setInt(3, c.getCategorie().getId());

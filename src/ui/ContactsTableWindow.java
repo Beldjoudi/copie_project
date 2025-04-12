@@ -10,15 +10,17 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+// Fenetre Swing pour afficher, rechercher, filtrer et gerer les contacts
 public class ContactsTableWindow extends JFrame {
 
+    // Composants principaux
     private JTable table;
     private DefaultTableModel model;
-    private int[] ids;
-    private JTextField searchField;
-    private JComboBox<Categorie> categorieFilter;
-    private JLabel photoLabel;
-    private List<Contact> allContacts;
+    private int[] ids; // Permet de garder les ID reels des contacts
+    private JTextField searchField; // Champ de recherche
+    private JComboBox<Categorie> categorieFilter; // Liste deroulante de categories
+    private JLabel photoLabel; // Affichage de la photo du contact
+    private List<Contact> allContacts; // Liste complete pour filtrage
 
     public ContactsTableWindow() {
         setTitle("Liste des Contacts");
@@ -27,12 +29,12 @@ public class ContactsTableWindow extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // 🔍 Recherche + Catégorie
+        // --- Zone superieure : recherche + filtre par categorie
         JPanel topPanel = new JPanel(new BorderLayout());
         searchField = new JTextField();
 
         categorieFilter = new JComboBox<>();
-        categorieFilter.addItem(new Categorie(0, "Toutes les catégories"));
+        categorieFilter.addItem(new Categorie(0, "Toutes les categories"));
         List<Categorie> categories = new CategorieDAO().getAllCategories();
         for (Categorie c : categories) {
             categorieFilter.addItem(c);
@@ -42,17 +44,17 @@ public class ContactsTableWindow extends JFrame {
         topFilters.add(searchField);
         topFilters.add(categorieFilter);
 
-        topPanel.add(new JLabel("🔍 Recherche + Catégorie :"), BorderLayout.NORTH);
+        topPanel.add(new JLabel("🔍 Recherche + Categorie :"), BorderLayout.NORTH);
         topPanel.add(topFilters, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
-        // 📋 Tableau
-        String[] columns = {"Nom", "Prénom", "Téléphone", "Email", "Catégorie", "Photo"};
+        // --- Tableau des contacts
+        String[] columns = {"Nom", "Prenom", "Telephone", "Email", "Categorie", "Photo"};
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model);
         add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // 🖼️ Zone d'affichage de la photo
+        // --- Zone pour afficher la photo du contact selectionne
         photoLabel = new JLabel();
         photoLabel.setHorizontalAlignment(JLabel.CENTER);
         photoLabel.setVerticalAlignment(JLabel.CENTER);
@@ -60,46 +62,48 @@ public class ContactsTableWindow extends JFrame {
         photoLabel.setBorder(BorderFactory.createTitledBorder("Photo du contact"));
         add(photoLabel, BorderLayout.EAST);
 
-        // 🔘 Boutons
-        JButton supprimerBtn = new JButton("Supprimer le contact sélectionné");
-        JButton modifierBtn = new JButton("Modifier le contact sélectionné");
+        // --- Boutons modifier / supprimer
+        JButton supprimerBtn = new JButton("Supprimer le contact selectionne");
+        JButton modifierBtn = new JButton("Modifier le contact selectionne");
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(supprimerBtn);
         buttonsPanel.add(modifierBtn);
         add(buttonsPanel, BorderLayout.SOUTH);
 
-        // 🔄 Charger tous les contacts
+        // --- Charger tous les contacts
         chargerContacts();
 
-        // 🔁 Recherche texte
+        // --- Activer la recherche par texte
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void insertUpdate(javax.swing.event.DocumentEvent e) { filtrer(); }
             public void removeUpdate(javax.swing.event.DocumentEvent e) { filtrer(); }
             public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrer(); }
         });
 
-        // 🔁 Filtrage par catégorie
+        // --- Activer le filtre par categorie
         categorieFilter.addActionListener(e -> filtrer());
 
-        // 🖱️ Sélection pour afficher photo
+        // --- Afficher photo quand une ligne est selectionnee
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 afficherPhotoSelectionnee();
             }
         });
 
-        // 🔘 Actions boutons
+        // --- Actions boutons
         supprimerBtn.addActionListener(e -> supprimerContactSelectionne());
         modifierBtn.addActionListener(e -> modifierContactSelectionne());
 
         setVisible(true);
     }
 
+    // Charge tous les contacts depuis la base
     private void chargerContacts() {
         allContacts = new ContactDAO().getAllContacts();
         afficherContacts(allContacts);
     }
 
+    // Affiche les contacts dans la JTable
     private void afficherContacts(List<Contact> contacts) {
         model.setRowCount(0);
         ids = new int[contacts.size()];
@@ -113,9 +117,10 @@ public class ContactsTableWindow extends JFrame {
             });
         }
 
-        photoLabel.setIcon(null); // Réinitialise la photo si on recharge
+        photoLabel.setIcon(null); // Reset la photo
     }
 
+    // Applique les filtres (texte + categorie)
     private void filtrer() {
         String texte = searchField.getText().toLowerCase();
         Categorie selectedCat = (Categorie) categorieFilter.getSelectedItem();
@@ -129,6 +134,7 @@ public class ContactsTableWindow extends JFrame {
         afficherContacts(resultats);
     }
 
+    // Affiche l'image du contact selectionne dans la JTable
     private void afficherPhotoSelectionnee() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
@@ -146,10 +152,11 @@ public class ContactsTableWindow extends JFrame {
         }
     }
 
+    // Supprime le contact selectionne dans la JTable
     private void supprimerContactSelectionne() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un contact !");
+            JOptionPane.showMessageDialog(this, "Veuillez selectionner un contact !");
             return;
         }
 
@@ -160,14 +167,15 @@ public class ContactsTableWindow extends JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             new ContactDAO().supprimerContact(idASupprimer);
             chargerContacts();
-            JOptionPane.showMessageDialog(this, "Contact supprimé !");
+            JOptionPane.showMessageDialog(this, "Contact supprime !");
         }
     }
 
+    // Ouvre une fenetre de modification pour le contact selectionne
     private void modifierContactSelectionne() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un contact !");
+            JOptionPane.showMessageDialog(this, "Veuillez selectionner un contact !");
             return;
         }
 
