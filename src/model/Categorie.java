@@ -1,43 +1,39 @@
 package model;
 
-// Classe qui represente une categorie dans le systeme
 public class Categorie {
-
-    // Identifiant unique de la categorie (correspond a l'ID dans la base)
     private int id;
-
-    // Nom de la categorie (ex: Amis, Travail, Famille)
     private String nom;
 
-    // Constructeur avec parametres
+    // 🎯 Constructeur principal
     public Categorie(int id, String nom) {
         this.id = id;
         this.nom = nom;
     }
 
-    // Accesseur pour id
-    public int getId() {
-        return id;
-    }
+    // 🧱 Getters et Setters
+    public int getId() { return id; }
+    public String getNom() { return nom; }
+    public void setId(int id) { this.id = id; }
+    public void setNom(String nom) { this.nom = nom; }
 
-    // Accesseur pour nom
-    public String getNom() {
+    // 📌 Affichage dans le JComboBox (affiche le nom au lieu de l'objet complet)
+    @Override
+    public String toString() {
         return nom;
     }
 
-    // Mutateur pour id
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    // Mutateur pour nom
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    // Methode utilisee automatiquement par les JComboBox
+    // ✅ Ajout de equals() pour comparer les objets Categorie correctement
     @Override
-    public String toString() {
-        return nom; // Permet d'afficher uniquement le nom dans les listes deroulantes
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // si c'est exactement le même objet
+        if (obj == null || getClass() != obj.getClass()) return false; // null ou classe différente
+        Categorie other = (Categorie) obj;
+        return this.id == other.id; // on considère égales deux catégories avec le même id
+    }
+
+    // 🔁 hashCode est toujours nécessaire avec equals (utilisé dans les listes, maps...)
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
     }
 }
