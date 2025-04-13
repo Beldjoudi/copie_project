@@ -10,33 +10,31 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-// Classe principale de l'application, elle affiche le formulaire pour ajouter un contact
 public class MainWindow extends JFrame {
 
     public MainWindow() {
-        // Titre et dimensions de la fenetre
         setTitle("Gestionnaire de Contacts");
         setSize(600, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // ==== ENTETE AVEC IMAGE DE FOND ET TEXTE EN BAS A DROITE ====
+        // 🖼️ EN-TÊTE avec fond dégradé noir → vert
         JPanel headerPanel = new JPanel() {
-            // Chargement de l'image d'entete
-            Image headerImage = new ImageIcon(getClass().getResource("adobestock_225991884_preview.jpeg")).getImage();
-
-            // Dessiner l'image dans le panel
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(headerImage, 0, 0, getWidth(), getHeight(), this);
+                Graphics2D g2d = (Graphics2D) g;
+                Color noir = new Color(0, 0, 0);
+                Color vert = new Color(0, 153, 0); // Vert "La Cité"
+                GradientPaint gp = new GradientPaint(0, 0, noir, getWidth(), getHeight(), vert);
+                g2d.setPaint(gp);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
         headerPanel.setPreferredSize(new Dimension(600, 100));
         headerPanel.setLayout(new BorderLayout());
 
-        // Texte sur l'image (titre de l'application)
         JLabel headerLabel = new JLabel("Gestionnaire de Contacts");
         headerLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         headerLabel.setForeground(Color.WHITE);
@@ -47,11 +45,10 @@ public class MainWindow extends JFrame {
 
         add(headerPanel, BorderLayout.NORTH);
 
-        // ==== FORMULAIRE CENTRAL ====
+        // 🔳 CENTRE : formulaire
         JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Champs du formulaire
         JTextField nomField = new JTextField();
         JTextField prenomField = new JTextField();
         JTextField telephoneField = new JTextField();
@@ -60,18 +57,16 @@ public class MainWindow extends JFrame {
         JButton photoBtn = new JButton("Choisir...");
         JComboBox<Categorie> categorieComboBox = new JComboBox<>();
 
-        // Charger les categories depuis la base
         List<Categorie> categories = new CategorieDAO().getAllCategories();
         for (Categorie c : categories) {
             categorieComboBox.addItem(c);
         }
 
-        // Ajouter les composants dans la grille
         panel.add(new JLabel("Nom :"));
         panel.add(nomField);
-        panel.add(new JLabel("Prenom :"));
+        panel.add(new JLabel("Prénom :"));
         panel.add(prenomField);
-        panel.add(new JLabel("Telephone :"));
+        panel.add(new JLabel("Téléphone :"));
         panel.add(telephoneField);
         panel.add(new JLabel("Email :"));
         panel.add(emailField);
@@ -79,12 +74,12 @@ public class MainWindow extends JFrame {
         panel.add(photoField);
         panel.add(new JLabel(""));
         panel.add(photoBtn);
-        panel.add(new JLabel("Categorie :"));
+        panel.add(new JLabel("Catégorie :"));
         panel.add(categorieComboBox);
 
         add(panel, BorderLayout.CENTER);
 
-        // ==== BOUTONS AJOUTER + AFFICHER ====
+        // 🔘 BOUTONS
         JButton ajouterBtn = new JButton("Ajouter le contact");
         JButton afficherBtn = new JButton("Afficher les contacts");
 
@@ -92,7 +87,7 @@ public class MainWindow extends JFrame {
         btnPanel.add(ajouterBtn);
         btnPanel.add(afficherBtn);
 
-        // ==== ACTION : CHOISIR UNE PHOTO ====
+        // 📷 Choisir image
         photoBtn.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             int res = chooser.showOpenDialog(this);
@@ -101,7 +96,7 @@ public class MainWindow extends JFrame {
             }
         });
 
-        // ==== ACTION : AJOUTER UN CONTACT ====
+        // ➕ Ajouter contact
         ajouterBtn.addActionListener((ActionEvent e) -> {
             String nom = nomField.getText();
             String prenom = prenomField.getText();
@@ -110,19 +105,17 @@ public class MainWindow extends JFrame {
             String photo = photoField.getText();
             Categorie categorie = (Categorie) categorieComboBox.getSelectedItem();
 
-            // Verifier que nom et prenom ne sont pas vides
             if (nom.isEmpty() || prenom.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Nom et prenom obligatoires !");
+                JOptionPane.showMessageDialog(this, "Nom et prénom obligatoires !");
                 return;
             }
 
-            // Creer et enregistrer le contact dans la base
             Contact c = new Contact(nom, prenom, categorie, telephone, email, photo);
             new ContactDAO().ajouterContact(c);
 
-            JOptionPane.showMessageDialog(this, "Contact ajoute avec succes !");
+            JOptionPane.showMessageDialog(this, "Contact ajouté avec succès !");
 
-            // Vider le formulaire
+            // Réinitialisation du formulaire
             nomField.setText("");
             prenomField.setText("");
             telephoneField.setText("");
@@ -131,27 +124,23 @@ public class MainWindow extends JFrame {
             categorieComboBox.setSelectedIndex(0);
         });
 
-        // ==== ACTION : AFFICHER LA LISTE DES CONTACTS ====
+        // 📄 Afficher
         afficherBtn.addActionListener(e -> new ContactsTableWindow());
 
-        // ==== FOOTER AVEC IMAGE + DROITS ====
+        // 🧱 FOOTER (logo + droits d’auteur)
         JPanel footer = new JPanel(new BorderLayout());
         footer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // Logo a gauche
         ImageIcon icon = new ImageIcon(getClass().getResource("OIP.jpg"));
         Image img = icon.getImage().getScaledInstance(180, 50, Image.SCALE_SMOOTH);
         JLabel imageLabel = new JLabel(new ImageIcon(img));
 
-        // Texte a droite
-        JLabel droitLabel = new JLabel("© 2025 Mouloud, Abdelghani, Walid – Tous droits reserves");
+        JLabel droitLabel = new JLabel("© 2025 Mouloud, Abdelghani, Walid – Tous droits réservés");
         droitLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        // Ajouter les composants au footer
         footer.add(imageLabel, BorderLayout.WEST);
         footer.add(droitLabel, BorderLayout.EAST);
 
-        // Ajouter les boutons + le footer dans un panel en bas
         JPanel panelGlobalSud = new JPanel(new BorderLayout());
         panelGlobalSud.add(btnPanel, BorderLayout.NORTH);
         panelGlobalSud.add(footer, BorderLayout.SOUTH);

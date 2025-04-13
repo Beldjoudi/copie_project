@@ -82,8 +82,8 @@ public class ContactsTableWindow extends JFrame {
         container.add(photoLabel, BorderLayout.EAST);
 
         // 🔘 Boutons
-        JButton supprimerBtn = new JButton("🗑️ Supprimer");
-        JButton modifierBtn = new JButton("✏️ Modifier");
+        JButton supprimerBtn = new JButton("Supprimer");
+        JButton modifierBtn = new JButton("Modifier");
         supprimerBtn.setBackground(new Color(220, 53, 69));
         supprimerBtn.setForeground(Color.WHITE);
         modifierBtn.setBackground(new Color(0, 123, 255));
