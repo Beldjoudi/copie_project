@@ -14,7 +14,7 @@ public class CategorieDAO {
         try (Connection conn = DatabaseConnection.getConnection()) {
             // Requete SQL pour recuperer toutes les lignes de la table categories
             String sql = "SELECT * FROM categories";
-
+// jai aussi modifier ceci
             // Creation d'un Statement pour executer la requete
             Statement stmt = conn.createStatement();
 
