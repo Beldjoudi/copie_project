@@ -10,7 +10,7 @@ public class CategorieDAO {
     // Methode pour recuperer toutes les categories depuis la base de donnees
     public List<Categorie> getAllCategories() {
         List<Categorie> categories = new ArrayList<>();
-/// liy89joijiojiohoihiohihi
+/// kjijjklkljkjkljlkjl
         try (Connection conn = DatabaseConnection.getConnection()) {
             // Requete SQL pour recuperer toutes les lignes de la table categories
             String sql = "SELECT * FROM categories";
