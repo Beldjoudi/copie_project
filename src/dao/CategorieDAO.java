@@ -11,6 +11,8 @@ public class CategorieDAO {
     public List<Categorie> getAllCategories() {
         List<Categorie> categories = new ArrayList<>();
 /// kjijjklkljkjkljlkjl
+
+        /// test
         try (Connection conn = DatabaseConnection.getConnection()) {
             // Requete SQL pour recuperer toutes les lignes de la table categories
             String sql = "SELECT * FROM categories";
