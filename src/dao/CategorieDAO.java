@@ -14,6 +14,7 @@ public class CategorieDAO {
 
         /// test
         //test1
+        /// mouloud chikour la promo la beaute digitale 998
         try (Connection conn = DatabaseConnection.getConnection()) {
             // Requete SQL pour recuperer toutes les lignes de la table categories
             String sql = "SELECT * FROM categories";
