@@ -4,7 +4,7 @@ import model.Categorie;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+// Bonjour c'est mon ytavail
 public class CategorieDAO {
 
     // Methode pour recuperer toutes les categories depuis la base de donnees
