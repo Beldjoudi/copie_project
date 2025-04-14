@@ -13,7 +13,7 @@ public class DatabaseConnection {
     private static final String USER = "root";
 
     // Mot de passe de l'utilisateur MySQL
-    private static final String PASSWORD = "admin";
+    private static final String PASSWORD = "root";
 
     // Methode statique pour obtenir une connexion à la base
     public static Connection getConnection() throws SQLException {
