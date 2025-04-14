@@ -13,6 +13,7 @@ public class CategorieDAO {
 /// kjijjklkljkjkljlkjl
 
         /// test
+        //test1
         try (Connection conn = DatabaseConnection.getConnection()) {
             // Requete SQL pour recuperer toutes les lignes de la table categories
             String sql = "SELECT * FROM categories";
