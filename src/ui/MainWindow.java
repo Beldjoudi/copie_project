@@ -13,6 +13,7 @@ import java.util.List;
 public class MainWindow extends JFrame {
 
     public MainWindow() {
+        // test
         setTitle("Gestionnaire de Contacts");
         setSize(600, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
