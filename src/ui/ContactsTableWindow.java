@@ -23,7 +23,7 @@ public class ContactsTableWindow extends JFrame {
     private JComboBox<Categorie> categorieFilter; // Filtre des catégories
     private JLabel photoLabel;                  // Zone d'affichage de la photo
     private List<Contact> allContacts;          // Liste complète des contacts
-
+/// ////////////////////////////////
     // Constructeur principal
     public ContactsTableWindow() {
         setTitle("Liste des Contacts");               // Titre de la fenêtre
