@@ -1,6 +1,9 @@
 package model;
-
-// Classe qui represente un contact dans l'application
+/**
+ * Classe représentant un contact dans l'application de gestion de contacts.
+ * Chaque contact possède un identifiant, un nom, un prénom, une catégorie,
+ * un numéro de téléphone, une adresse email et éventuellement une photo.
+ */
 public class Contact {
 
     // Identifiant unique du contact (auto-incremente dans la base)
